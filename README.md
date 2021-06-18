@@ -1,3 +1,7 @@
+## fiber-fsteps
+A project for learning the basics of building webapps with Fiber. Uses [go-memdb](https://github.com/hashicorp/go-memdb)
+an in-memory database.
+
 ### Setup project
 ```bash
 go mod init
