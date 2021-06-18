@@ -93,6 +93,22 @@ func main() {
 		return c.JSON(all)
 	})
 
+	app.Post("/todo", func(c *fiber.Ctx) error {
+
+		txn = db.Txn(true)
+		todo := new(ToDo)
+		err := c.BodyParser(todo)
+		if err != nil {
+			return err
+		}
+		txn.Insert("toDo", todo)
+
+		txn.Commit()
+		txn = db.Txn(false)
+
+		return c.JSON(todo)
+	})
+
 	app.Listen(":8000")
 
 }
