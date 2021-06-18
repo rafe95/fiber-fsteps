@@ -106,6 +106,23 @@ func main() {
 		txn.Commit()
 		txn = db.Txn(false)
 
+		return c.Status(201).JSON(todo)
+	})
+
+	app.Put("todo/:id", func(c *fiber.Ctx) error {
+
+		todo := new(ToDo)
+		err := c.BodyParser(todo)
+		if err != nil {
+			return err
+		}
+
+		txn = db.Txn(true)
+		txn.Insert("toDo", todo)
+
+		txn.Commit()
+		txn = db.Txn(false)
+
 		return c.JSON(todo)
 	})
 
