@@ -126,6 +126,22 @@ func main() {
 		return c.JSON(todo)
 	})
 
+	app.Delete("/todo/:id", func(c *fiber.Ctx) error {
+		id := c.Params("id")
+		txn = db.Txn(true)
+
+		raw, err := txn.First("toDo", "id", id)
+		if err != nil {
+			panic(err)
+		}
+		txn.Delete("toDo", raw.(*ToDo))
+
+		txn.Commit()
+		txn = db.Txn(false)
+
+		return c.Status(204).JSON("")
+	})
+
 	app.Listen(":8000")
 
 }
