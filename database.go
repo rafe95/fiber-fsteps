@@ -6,6 +6,11 @@ var schema *memdb.DBSchema
 var db *memdb.MemDB
 var txn *memdb.Txn
 
+type ToDo struct {
+	ID   string `json:"id"`
+	Task string `json:"task"`
+}
+
 func migrateDb() {
 	// Create the DB schema
 	schema = &memdb.DBSchema{

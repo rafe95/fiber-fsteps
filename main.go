@@ -4,11 +4,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type ToDo struct {
-	ID   string `json:"id"`
-	Task string `json:"task"`
-}
-
 func main() {
 
 	migrateDb()
