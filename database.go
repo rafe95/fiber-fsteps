@@ -27,11 +27,13 @@ func migrateDb() {
 			},
 		},
 	}
+
+	// Create a new data base
+	db, _ = memdb.NewMemDB(schema)
+	defer txn.Abort()
 }
 
 func populateDb() {
-	// Create a new data base
-	db, _ = memdb.NewMemDB(schema)
 
 	// Create a write transaction
 	txn = db.Txn(true)
@@ -53,5 +55,5 @@ func populateDb() {
 
 	// Create read-only transaction
 	txn = db.Txn(false)
-	defer txn.Abort()
+
 }
