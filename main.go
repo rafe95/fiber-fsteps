@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hashicorp/go-memdb"
+	"github.com/hashicorp/go-uuid"
 )
 
 type ToDo struct {
@@ -101,6 +102,7 @@ func main() {
 		if err != nil {
 			return err
 		}
+		todo.ID, _ = uuid.GenerateUUID()
 		txn.Insert("toDo", todo)
 
 		txn.Commit()
