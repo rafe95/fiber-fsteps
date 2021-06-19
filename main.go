@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hashicorp/go-memdb"
-	"github.com/hashicorp/go-uuid"
 )
 
 type ToDo struct {
@@ -68,81 +67,15 @@ func main() {
 
 	app := fiber.New()
 
-	app.Get("/todo/:id", func(c *fiber.Ctx) error {
-		// Lookup by id
-		id := c.Params("id")
-		raw, err := txn.First("toDo", "id", id)
-		if err != nil {
-			panic(err)
-		}
-		return c.JSON(raw.(*ToDo))
-	})
+	app.Get("/todo/:id", GetById)
 
-	app.Get("/todos", func(c *fiber.Ctx) error {
-		// List all
-		var all []ToDo
-		todos, err := txn.Get("toDo", "id")
-		if err != nil {
-			panic(err)
-		}
+	app.Get("/todos", GetAll)
 
-		for obj := todos.Next(); obj != nil; obj = todos.Next() {
-			p := obj.(*ToDo)
-			all = append(all, *p)
-		}
+	app.Post("/todo", Save)
 
-		return c.JSON(all)
-	})
+	app.Put("todo/:id", Update)
 
-	app.Post("/todo", func(c *fiber.Ctx) error {
-
-		txn = db.Txn(true)
-		todo := new(ToDo)
-		err := c.BodyParser(todo)
-		if err != nil {
-			return err
-		}
-		todo.ID, _ = uuid.GenerateUUID()
-		txn.Insert("toDo", todo)
-
-		txn.Commit()
-		txn = db.Txn(false)
-
-		return c.Status(201).JSON(todo)
-	})
-
-	app.Put("todo/:id", func(c *fiber.Ctx) error {
-
-		todo := new(ToDo)
-		err := c.BodyParser(todo)
-		if err != nil {
-			return err
-		}
-
-		txn = db.Txn(true)
-		txn.Insert("toDo", todo)
-
-		txn.Commit()
-		txn = db.Txn(false)
-
-		return c.JSON(todo)
-	})
-
-	app.Delete("/todo/:id", func(c *fiber.Ctx) error {
-		id := c.Params("id")
-		txn = db.Txn(true)
-
-		raw, err := txn.First("toDo", "id", id)
-		if err != nil {
-			panic(err)
-		}
-		txn.Delete("toDo", raw.(*ToDo))
-
-		txn.Commit()
-		txn = db.Txn(false)
-
-		return c.Status(204).JSON("")
-	})
+	app.Delete("/todo/:id", DeleteById)
 
 	app.Listen(":8000")
 
