@@ -7,4 +7,5 @@ an in-memory database.
 go mod init
 go get github.com/gofiber/fiber/v2
 go get github.com/hashicorp/go-memdb
+go get github.com/hashicorp/go-uuid@v1.0.1
 ```
