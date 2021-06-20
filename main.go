@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html"
 )
 
 func main() {
@@ -10,7 +11,15 @@ func main() {
 
 	populateDb()
 
-	app := fiber.New()
+	engine := html.New("./views", ".html")
+
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
+
+	app.Static("/static", "./static")
+
+	app.Get("/", Home)
 
 	app.Get("/todo/:id", GetById)
 
