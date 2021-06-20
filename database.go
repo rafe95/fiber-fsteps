@@ -42,7 +42,7 @@ func populateDb() {
 	people := []*ToDo{
 		{"h1h2", "Bake bread", false, "Cooking"},
 		{"h5h6", "Walk the dog", false, "Home"},
-		{"r432", "Complete a form", false, "College"},
+		{"r432", "Complete a form", true, "College"},
 	}
 	for _, p := range people {
 		if err := txn.Insert("toDo", p); err != nil {
