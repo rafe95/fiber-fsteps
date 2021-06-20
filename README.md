@@ -1,6 +1,5 @@
 ## fiber-fsteps
-A project for learning the basics of building webapps with Fiber. Uses [go-memdb](https://github.com/hashicorp/go-memdb)
-,an in-memory database.
+A project for learning the basics of building webapps with Fiber. Uses [go-memdb](https://github.com/hashicorp/go-memdb), an in-memory database.
 
 ### Requirements
 > Go 1.16+
