@@ -7,8 +7,10 @@ var db *memdb.MemDB
 var txn *memdb.Txn
 
 type ToDo struct {
-	ID   string `json:"id"`
-	Task string `json:"task"`
+	ID        string `json:"id"`
+	Task      string `json:"task"`
+	Completed bool   `json:"completed"`
+	Category  string `json:"category"`
 }
 
 func migrateDb() {
@@ -38,9 +40,9 @@ func populateDb() {
 
 	// Insert some toDos
 	people := []*ToDo{
-		{"h1h2", "Bake bread"},
-		{"h5h6", "Walk the dog"},
-		{"r432", "Complete a form"},
+		{"h1h2", "Bake bread", false, "Cooking"},
+		{"h5h6", "Walk the dog", false, "Home"},
+		{"r432", "Complete a form", false, "College"},
 	}
 	for _, p := range people {
 		if err := txn.Insert("toDo", p); err != nil {
